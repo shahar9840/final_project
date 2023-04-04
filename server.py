@@ -1,5 +1,4 @@
-from flask import Flask,render_template,redirect,url_for,request
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 from db import db
 
 app = Flask(__name__)
@@ -14,5 +13,5 @@ with app.app_context():
 
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(debug=True)
