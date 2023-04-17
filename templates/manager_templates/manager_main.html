@@ -1,0 +1,39 @@
+{% extends 'layouts/layout_manager.html' %}{% block manager %} {% with loged =
+get_flashed_messages(category_filter=['loged']) %} {%if loged %} {% for message
+in loged %}
+
+
+<div class="card-panel light-green">{{message}}</div>
+{% endfor %} {% endif %} {%endwith %}
+
+{% with create_new =get_flashed_messages(category_filter=['create_new']) %}
+{%if create_new %} 
+{% for message in create_new %}
+    <div class="card-panel light-green">{{message}}</div>
+{% endfor %}
+{% endif %}
+{%endwith %}
+<section style="margin: 10px;" >
+<div class="section">
+  <h5>Add Categories</h5>
+  <p><div>
+    <a class="waves-effect light-green btn " href="{{url_for('managers.create_category')}}">Enter</a>
+  </div>
+  </p>
+</div>
+<div class="section">
+    <h5>Add dishes</h5>
+    <p>    <div>
+        <a class="waves-effect light-green btn" href="{{url_for('managers.dish_manage')}}">Enter</a>
+     </div>
+    </p>
+  </div>
+  <div class="section">
+    <h5>Show Orders</h5>
+    <p>    <div>
+        <a class="waves-effect light-green btn" href="{{url_for('managers.orders_manage')}}">Enter</a>
+      </div>
+    </p>
+  </div>
+</section><br>
+{% endblock %}

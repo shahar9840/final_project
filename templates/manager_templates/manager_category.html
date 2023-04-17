@@ -1,0 +1,14 @@
+{% extends 'layouts/layout_manager.html' %}{% block manager %} 
+<form action="{{url_for('managers.create_category')}}" method="POST" class="card-panel">
+    
+    <div>
+        <div>{{form.create_category.label}}</div>
+        <div>{{form.create_category}}</div>
+    </div>
+    <div>
+        <div>{{form.imageUrl.label}}</div>
+        <div>{{form.imageUrl}}</div>
+    </div>
+    <div>{{form.submit2}}</div>
+</form>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'layouts/layout.html' %}{% block content %}
+<div><h3>Login</h3></div>
+{% with loged = get_flashed_messages(category_filter=['loged']) %}
+{%if loged %}
+    {% for message in loged %}
+        <div class="card-panel green">{{message}}</div>
+        {% endfor %}
+    {% endif %}
+{%endwith %}
+<form action="{{url_for('users.login')}}" method="POST" class="card-panel" style="margin: 10px;">
+<div>
+<div>{{form.username.label}}</div>
+<div>{{form.username}}</div>
+</div>
+<div>
+<div>{{form.password.label}}</div>
+<div>{{form.password}}</div>
+</div>
+<div>
+    <p>
+        <label>
+            {{form.remember_me( class="filled-in " )}}
+            <span>Remember Me</span>
+        </label>
+    </p>
+</div>
+
+<div>{{form.submit1}}</div>
+</form><br>
+{% endblock %}

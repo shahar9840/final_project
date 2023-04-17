@@ -1,0 +1,14 @@
+{% extends 'layouts/layout.html' %}{% block content %}
+{% with success = get_flashed_messages(category_filter=['success']) %}
+{% if success %}
+    {% for message in success %}
+        <div  class="card-panel light-green">{{message}}</div>
+    {% endfor %}
+{% endif %} 
+{% endwith %}
+<section style="margin: 10px;">
+    <div class="row">
+    <div><h4>Hello {{greeting}}!</h4></div></div>
+
+</section>
+{% endblock %}

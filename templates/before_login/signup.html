@@ -1,0 +1,45 @@
+{% extends 'layouts/layout.html' %}{% block content %}
+<div><h3>Signup</h3></div>
+<form method="POST" action="{{url_for('users.signup')}}" novalidate class="card-panel">
+    
+    <div>
+        <div>{{form.first_name.label}}</div>
+        <div>{{form.first_name}}</div>
+    </div>
+    <div>
+        <div>{{form.last_name.label}}</div>
+        <div>{{form.last_name}}</div>
+    </div>
+    <div>
+        {% with not_avalible = get_flashed_messages(category_filter=['not_avalible']) %}
+        {% if not_avalible %}
+            {% for message in not_avalible %}
+            <div class="card-panel red ">{{message}}</div>
+            {%endfor%}
+            {%endif%}
+            {% endwith %}
+        <div>{{form.username.label}}</div>
+        <div>{{form.username}}</div>
+    </div>
+    <div>
+        <div>{{form.password.label}}</div>
+        <div>{{form.password}}</div>
+    </div>
+    <div>
+        {% with unmatch = get_flashed_messages(category_filter=['unmatch']) %}
+        {% if unmatch %}
+            {% for message in unmatch %}
+            <div class="card-panel red ">{{message}}</div>
+            {%endfor%}
+            {%endif%}
+            {% endwith %}
+        <div>{{form.confirm_password.label}}</div>
+        <div>{{form.confirm_password}}</div>
+    </div>
+    <div>
+        <div>{{form.email.label}}</div>
+        <div>{{form.email}}</div>
+    </div>
+    <div>{{form.submit1}}</div>
+</form>
+{% endblock %}
