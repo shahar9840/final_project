@@ -38,19 +38,19 @@ def signup():
                 db.session.rollback()
                 flash('user name is already taken','not_avalible')                    
                 return redirect(url_for('users.signup'))
-            else:
-                if str(form.confirm_password.data) == str(form.password.data):
-                    new_user = User(
-                            username=form.username.data,
-                            password=form.password.data,
-                            first_name=form.first_name.data,
-                            last_name = form.last_name.data,
-                            email=form.email.data
-                        )
-                    db.session.add(new_user)
-                    db.session.commit()
-                    flash('signup succsfully','success')
-                    return redirect(url_for('users.login'))
+        else:
+            if str(form.confirm_password.data) == str(form.password.data):
+                new_user = User(
+                        username=form.username.data,
+                        password=form.password.data,
+                        first_name=form.first_name.data,
+                        last_name = form.last_name.data,
+                        email=form.email.data
+                    )
+                db.session.add(new_user)
+                db.session.commit()
+                flash('signup succsfully','success')
+                return redirect(url_for('users.login'))
     return render_template('before_login/signup.html',form=form)
 
 
