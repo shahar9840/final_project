@@ -1,10 +1,10 @@
 from flask import render_template, redirect,request,url_for,flash
-from flask_login import LoginManager,UserMixin,login_user,current_user,login_required,logout_user
+from flask_login import login_user,current_user,login_required,logout_user
 from models.users import User
-from models.dishes import Dish
 from models.carts import Cart
 from models.deliveries import Delivery
-from form import Form
+from form_signup import SignUpForm
+from form_login import LoginForm
 from db import db
 from auth import login_manager
 from sqlalchemy.exc import IntegrityError
@@ -12,26 +12,21 @@ from sqlalchemy.exc import IntegrityError
         
 
 def signup():
-    form= Form()
+    form= SignUpForm()
     users = User.query.all()
-    print(users)
-    print(form.errors)
-
-    if request.method == 'POST' :
+    if request.method == 'POST' and form.validate_on_submit():
         print(form.errors)
         if len(users) > 0 :
             try:
                 for user in users:
-                    if str(user.username) != str(form.username.data) and str(form.confirm_password.data) == str(form.password.data):
-                            print('not taken')
+                    if str(user.username) != str(form.username.data) and str(form.confirm_password.data) == str(form.password.data):  
                             new_user = User(
                                 username=form.username.data,
                                 password=form.password.data,
                                 first_name=form.first_name.data,
                                 last_name=form.last_name.data,
                                 email=form.email.data
-                            )   
-                            print('hi') 
+                            )    
                             db.session.add(new_user)
                             db.session.commit()
 
@@ -78,7 +73,7 @@ def signup():
                 db.session.commit()
                 flash('signup succsfully','success')
                 return redirect(url_for('users.login'))
-    return render_template('before_login/signup.html',form=form)
+    return render_template('before_login/signup.html',form=SignUpForm)
 
 
 @login_manager.user_loader
@@ -92,11 +87,10 @@ def unauthorized():
 
 
 def login():
-    form = Form() 
+    form = LoginForm() 
     if current_user.is_authenticated:
         return redirect(url_for('main.main'))
     if request.method == "POST":
-        print(form.remember_me.data)
         remember=False
         if form.remember_me.data == True:
             remember=True
@@ -114,6 +108,9 @@ def login():
                 # finally:
                 flash('loged','loged')
                 return redirect(url_for('users.login'))
+            else:
+                flash('wrong password please try again','wrong_password')
+                return redirect(url_for('users.login'))
     return render_template('before_login/login.html',form=form)
 
 @login_required
@@ -124,10 +121,9 @@ def logout():
 
 @login_required
 def change_details():
-    form=Form()
-
+    form=SignUpForm()
     user=current_user
-    if request.method == 'POST':
+    if request.method == 'POST' and form.validate_on_submit():
         if str(form.confirm_password.data) == str(form.password.data):
             user.first_name=form.first_name.data
             user.last_name = form.last_name.data

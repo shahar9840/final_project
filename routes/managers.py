@@ -13,7 +13,7 @@ managers_bp.add_url_rule('/managers/all_dishes',view_func=show_dishes,methods=['
 managers_bp.add_url_rule('/managers/category/<int:id>',view_func=dishes_by_category,methods=['GET','POST'])
 managers_bp.add_url_rule('/managers/dish/<int:id>/delete',view_func=delete_dish,methods=['GET','POST'])
 managers_bp.add_url_rule('/managers/dish/<int:id>/edit',view_func=edit_dish,methods=['GET','POST'])
-managers_bp.add_url_rule('/managers/dishes',view_func=create_dish,methods=['GET','POST'])
+managers_bp.add_url_rule('/managers/create_dish',view_func=create_dish,methods=['GET','POST'])
 managers_bp.add_url_rule('/managers/orders',view_func=orders_manage,methods=['GET','POST'])
 managers_bp.add_url_rule('/managers/orders/show_order/<int:id>',view_func=show_order,methods=['GET','POST'])
 managers_bp.add_url_rule('/managers/orders/clean_order/<int:id>',view_func=clean_order,methods=['GET','POST'])

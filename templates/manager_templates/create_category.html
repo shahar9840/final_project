@@ -1,14 +1,20 @@
 {% extends 'layouts/layout_manager.html' %}{% block manager %} 
 <h3 class="right-align ">הוסף קטגוריה</h3>
-<form action="{{url_for('managers.create_category')}}" method="POST" class="card-panel">
-    
+<form action="{{url_for('managers.create_category')}}" method="POST" novalidate class="card-panel">
+    {{form.csrf_token}}
     <div>
         <div>{{form.create_category.label}}</div>
         <div>{{form.create_category}}</div>
+        {% for message in form.create_category.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
     </div>
     <div>
         <div>{{form.imageUrl.label}}</div>
         <div>{{form.imageUrl}}</div>
+        {% for message in form.imageUrl.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
     </div>
     <div>{{form.submit2}}</div>
 </form>

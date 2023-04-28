@@ -1,6 +1,7 @@
 {% extends 'layouts/layout_manager.html' %}{% block manager %} 
 <h3 class="right-align ">הוסף מנה</h3>
-<form action="{{url_for('managers.create_dish')}}" method="POST" class="card-panel">
+<form action="{{url_for('managers.create_dish')}}" method="POST" novalidate class="card-panel">
+    {{form.csrf_token}}
     {% with choose =
         get_flashed_messages(category_filter=['choose']) %} {% if choose %} {% for
         message in choose %}
@@ -19,10 +20,16 @@
     <div>
         <div>{{form.dish_name.label}}</div>
         <div>{{form.dish_name}}</div>
+        {% for message in form.dish_name.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
     </div>
     <div>
         <div>{{form.price.label}}</div>
         <div>{{form.price}}</div>
+        {% for message in form.price.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
     </div>
     <div>
         <div>{{form.description.label}}</div>
@@ -31,6 +38,9 @@
     <div>
         <div>{{form.imageUrl.label}}</div>
         <div>{{form.imageUrl}}</div>
+        {% for message in form.imageUrl.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
     </div>
 
     <div >

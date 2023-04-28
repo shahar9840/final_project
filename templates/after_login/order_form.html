@@ -5,6 +5,9 @@
   <div>
     <div>{{form.address.label}}</div>
     <div>{{form.address(value=delivery.address)}}</div>
+    {% for message in form.address.errors %}
+    <div style="color: red">{{message}}</div>
+    {% endfor %}
   </div>
   <div>
     <div>{{form.comment.label}}</div>

@@ -11,7 +11,7 @@
     <div class="center-align border-bottom">
       <h5 >הוסף מנה</h5>
       <p><div class="center-align" >
-        <a class=" waves-effect light-green btn " href="{{url_for('managers.create_dish')}}">הוסף</a>
+        <a class=" hoverable waves-effect light-green btn " href="{{url_for('managers.create_dish')}}">הוסף</a>
       </div>
       </p>
     </div>
@@ -35,8 +35,8 @@
             {%endif%}
           </div>
           <div class="card-action ">
-            <a  href="{{url_for('managers.edit_dish',id=dish.id)}}">עריכה</a>
-            <a  href="{{url_for('managers.delete_dish',id=dish.id)}}">מחיקה</a>
+            <a class=" hoverable waves-effect light-green btn " href="{{url_for('managers.edit_dish',id=dish.id)}}">עריכה</a>
+            <a class=" hoverable waves-effect light-green btn " href="{{url_for('managers.delete_dish',id=dish.id)}}">מחיקה</a>
           </div>
         </div>
       </div>

@@ -1,25 +1,21 @@
 from flask import render_template, redirect,request,url_for,flash
 from flask_login import current_user,login_required
 from db import db
-from sqlalchemy.exc import IntegrityError
-from models.category import Category
-from models.users import User
-from models.dishes import Dish,Items
 from models.carts import Cart
 from models.deliveries import Delivery
-from form import Form
+from form_order import OrderForm
 from controllers.cart import show_order
 from datetime import datetime as dt
 
 
 @login_required
 def order_form(id):
-    form=Form()
+    form=OrderForm()
     now=dt.now()
     print(now)
     delivery=current_user.carts[-1].deliveries
     print(delivery.is_delivered)
-    if request.method == 'POST':
+    if request.method == 'POST' and form.validate_on_submit():
         delivery.address = form.address.data
         delivery.comment = form.comment.data
         delivery.created = now

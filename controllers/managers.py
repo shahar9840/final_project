@@ -4,7 +4,9 @@ from models.users import User
 from models.category import Category
 from models.deliveries import Delivery
 from models.dishes import Dish
-from form import Form
+from form_login import LoginForm
+from form_createdish import CreateDishForm
+from form_createcategory import CreateCategoryForm
 from db import db
 from auth import login_manager
 from controllers.cart import show_order
@@ -37,7 +39,7 @@ def unauthorized():
 
 
 def manager_login():
-    form = Form()
+    form = LoginForm()
     
     if current_user.is_authenticated:
         return redirect(url_for('managers.manager_main'))
@@ -70,9 +72,9 @@ def manager_main():
 
 @login_required
 def create_category():
-    form = Form()
+    form = CreateCategoryForm()
     if current_user.is_staff:
-        if request.method == "POST":
+        if request.method == "POST" and form.validate_on_submit():
             new_category = Category(
                 name = form.create_category.data,
                 imageUrl = form.imageUrl.data
@@ -84,7 +86,7 @@ def create_category():
         return render_template('manager_templates/create_category.html',form=form)
 @login_required
 def edit_category(id):
-    form=Form()
+    form=CreateCategoryForm()
     category = Category.query.get(id)
     if current_user.is_staff:
         if request.method =="POST":
@@ -106,30 +108,27 @@ def delete_category(id):
    
 @login_required
 def create_dish():
-        form = Form()
+        form = CreateDishForm()
         categories=Category.query.all()
-        # form.categories_select.choices=[(category.id,category.name) for category in categories]
-        # print(form.categories_select.choices)
         if current_user.is_staff:
-            try:
-                if request.method == "POST":
-                    # print(form.categories_select)
-                    new_dish = Dish(
-                        name=form.dish_name.data,
-                        price=form.price.data,
-                        description=form.description.data,
-                        imageUrl=form.imageUrl.data,
-                        is_gluten_free = form.is_gluten_free.data,
-                        is_vegeterian = form.is_vegeterian.data,
-                        category_id = request.form['select_categories']
-                    )
-                    db.session.add(new_dish)
+            if request.method == "POST" and form.validate_on_submit():
+                new_dish = Dish(
+                    name=form.dish_name.data,
+                    price=form.price.data,
+                    description=form.description.data,
+                    imageUrl=form.imageUrl.data,
+                    is_gluten_free = form.is_gluten_free.data,
+                    is_vegeterian = form.is_vegeterian.data,
+                    category_id = request.form['select_categories']
+                )
+                db.session.add(new_dish)
+                try:  
                     db.session.commit()
                     return redirect(url_for('managers.show_dishes'))
-                return render_template('manager_templates/create_dish.html',form=form,categories=categories)
-            except BadRequestKeyError:
-                flash('אנא בחר קטגוריה למנה','choose')
-                return redirect(url_for('managers.create_dish'))
+                except BadRequestKeyError:
+                    flash('אנא בחר קטגוריה למנה','choose')
+                    return redirect(url_for('managers.create_dish'))
+            return render_template('manager_templates/create_dish.html',form=form,categories=categories)
         
 
 
@@ -153,7 +152,7 @@ def show_dishes():
     
 @login_required
 def edit_dish(id):
-    form = Form()
+    form = CreateDishForm()
     dish = Dish.query.get(id)
     categories = Category.query.all()
     if current_user.is_staff:

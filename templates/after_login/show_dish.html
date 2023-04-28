@@ -23,10 +23,10 @@
         {%endif%} {% if dish.is_vegeterian%}
         <div>טבעוני</div>
         {%endif%}
-        <a class="waves-effect light-blue btn" href="{{url_for('main.main')}}"
+        <a class="hoverable waves-effect light-blue btn" href="{{url_for('main.main')}}"
           >חזרה לעמוד הראשי</a
         >
-        <a class="waves-effect light-blue btn" href="{{url_for('cart.add_to_cart',id=dish.categories.id)}}"
+        <a class="hoverable waves-effect light-blue btn" href="{{url_for('cart.add_to_cart',id=dish.categories.id)}}"
           >הוספה לעגלה</a
         >
       </div>
