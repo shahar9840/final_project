@@ -1,7 +1,7 @@
 {% extends 'layouts/layout_manager.html' %}{%block manager %}
 <div><h3>Manager Login</h3></div>
 
-<form action="{{url_for('managers.manager_login')}}" method="POST" class="card-panel">
+<form novalidate action="{{url_for('managers.manager_login')}}" method="POST" class="card-panel">
 <div>
     <div>{{form.username.label}}</div>
     <div>{{form.username}}</div>

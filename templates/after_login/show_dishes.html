@@ -1,0 +1,41 @@
+{% extends 'layouts/layout.html' %}{% block content %}
+<div class="right-align border-bottom"><h2>מנות</h2></div>
+<div class="row">
+  {% for dish in dishes %}
+  <div class="col s12 m3 right-align">
+    <div class="card grey lighten-3">
+      <div class="card-image">
+        <img class="" src="{{dish.imageUrl}}" />
+      </div>
+      <span class="card-title">{{dish.name}}</span>
+      <div>
+        <div>קטגוריה: {{dish.categories.name}}</div>
+        <div>מחיר: {{dish.price}}₪</div>
+        <p>
+          :תיאור<br />
+          {{dish.description}}
+        </p>
+        {%if dish.is_gluten_free%}
+        <div>ללא גלוטן</div>
+        {%endif%} {% if dish.is_vegeterian%}
+        <div>טבעוני</div>
+        {%endif%}
+      </div>
+      <div class="card-action">
+        <div class="center-align"><a class="waves-effect light-blue btn" href="{{url_for('cart.add_to_cart',id=dish.id)}}">הוסף לעגלה</a></div>
+          <div><select name="amount" id="">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+          </div>
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+</div>
+{% endblock %}

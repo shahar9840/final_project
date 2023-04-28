@@ -1,0 +1,26 @@
+{% extends 'layouts/layout.html' %}{% block content %}
+<div class="card-panel right-align">
+    <div class="right-align"><h2>!הזמנה בוצעה בהצלחה</h2></div>
+    <div><h4>{{delivery.id}} :הזמנה מספר</h4></div>
+    <div>
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th>שם מנה</th>
+                    <th>מחיר</th>
+                </tr>
+            </thead>
+            {% for item in delivery.cart.items%}
+            <tbody>
+              <tr>
+                <td>{{item.dishes.name}}</td>
+                <td>{{item.dishes.price}}₪</td>
+              </tr>
+            </tbody>
+            {%endfor%}
+        </table>
+        <h5>שולם:{{cart_price}}₪</h5>
+    </div>
+    
+</div>
+{% endblock %}

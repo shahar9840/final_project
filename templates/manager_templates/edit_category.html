@@ -1,13 +1,14 @@
 {% extends 'layouts/layout_manager.html' %}{% block manager %} 
+<h3 class="right-align ">הוסף קטגוריה</h3>
 <form action="{{url_for('managers.create_category')}}" method="POST" class="card-panel">
     
     <div>
         <div>{{form.create_category.label}}</div>
-        <div>{{form.create_category}}</div>
+        <div>{{form.create_category(value= category.name)}}</div>
     </div>
     <div>
         <div>{{form.imageUrl.label}}</div>
-        <div>{{form.imageUrl}}</div>
+        <div>{{form.imageUrl(value=category.imageUrl)}}</div>
     </div>
     <div>{{form.submit2}}</div>
 </form>

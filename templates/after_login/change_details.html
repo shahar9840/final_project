@@ -1,3 +1,59 @@
-{% extends 'layout.html' %}{% block content %}
-change details
+{% extends 'layouts/layout.html' %}{% block content %}
+<form method="POST" action="{{url_for('users.signup')}}" novalidate class="card-panel">
+    {{form.csrf_token}}
+    <div>
+        <div>{{form.first_name.label}}</div>
+        <div>{{form.first_name(value=user.first_name)}}</div>
+        {% for message in form.first_name.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
+    </div>
+    <div>
+        <div>{{form.last_name.label}}</div>
+        <div>{{form.last_name(value=user.last_name)}}</div>
+        {% for message in form.last_name.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
+    </div>
+    <div>
+        {% with not_avalible = get_flashed_messages(category_filter=['not_avalible']) %}
+        {% if not_avalible %}
+            {% for message in not_avalible %}
+            <div class="card-panel red ">{{message}}</div>
+            {%endfor%}
+            {%endif%}
+            {% endwith %}
+        <div>{{form.username.label}}</div>
+        <div>{{form.username(value=user.username)}}</div>
+        {% for message in form.username.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
+    </div>
+    <div>
+        <div>{{form.password.label}}</div>
+        <div>{{form.password(value=user.password)}}</div>
+        {% for message in form.password.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
+    </div>
+    <div>
+        <div>{{form.confirm_password.label}}</div>
+        <div>{{form.confirm_password(value=user.confirm_password)}}</div>
+        {% for message in form.confirm_password.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
+    </div>
+    <div>
+        <div>{{form.email.label}}</div>
+        <div>{{form.email(value=user.email)}}</div>
+        {% for message in form.email.errors %}
+        <div style="color: red">{{message}}</div>
+        {% endfor %}
+    </div>
+    <div>
+        <div>{{form.address.label}}</div>
+        <div>{{form.address(value=user.carts[-1].deliveries.address)}}</div>
+    </div>
+    <div>{{form.submit1}}</div>
+</form>
 {% endblock %}

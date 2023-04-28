@@ -1,0 +1,16 @@
+{% extends 'layouts/layout.html' %}{% block content %}
+<form action="{{url_for('deliveries.order_form',id = delivery.id)}}" novalidate method="POST">
+    {{form.csrf_token}}
+<div class="card-panel">
+  <div>
+    <div>{{form.address.label}}</div>
+    <div>{{form.address(value=delivery.address)}}</div>
+  </div>
+  <div>
+    <div>{{form.comment.label}}</div>
+    <div>{{form.comment(value=delivery.comment)}}</div>
+  </div>
+  <div>{{form.submit4}}</div>
+</div>
+</form>
+{% endblock %}

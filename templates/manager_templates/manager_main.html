@@ -2,38 +2,76 @@
 get_flashed_messages(category_filter=['loged']) %} {%if loged %} {% for message
 in loged %}
 
-
+<div class="card-panel light-green">{{message}}</div>
+{% endfor %} {% endif %} {%endwith %} {% with
+create_new=get_flashed_messages(category_filter=['create_new']) %} {%if
+create_new %} {% for message in create_new %}
 <div class="card-panel light-green">{{message}}</div>
 {% endfor %} {% endif %} {%endwith %}
 
-{% with create_new =get_flashed_messages(category_filter=['create_new']) %}
-{%if create_new %} 
-{% for message in create_new %}
-    <div class="card-panel light-green">{{message}}</div>
-{% endfor %}
-{% endif %}
-{%endwith %}
-<section style="margin: 10px;" >
-<div class="section">
-  <h5>Add Categories</h5>
-  <p><div>
-    <a class="waves-effect light-green btn " href="{{url_for('managers.create_category')}}">Enter</a>
+
+<div class="row">
+  <div class="col s6">
+    <h3 class="right-align border-bottom">קטגוריות</h3>
   </div>
-  </p>
+  <div class="col s6">
+    <h3 class="right-align border-bottom">ניהול הזמנות</h3>
+  </div>
 </div>
-<div class="section">
-    <h5>Add dishes</h5>
-    <p>    <div>
-        <a class="waves-effect light-green btn" href="{{url_for('managers.dish_manage')}}">Enter</a>
-     </div>
-    </p>
+
+<div class="row" style="margin: 10px">
+  <div class="col s3">
+    <h5 class="center-align">הוסף קטגוריה</h5>
+    <div class="center-align">
+      <a class="waves-effect light-green btn" href="{{url_for('managers.create_category')}}">הוסף</a>
+    </div>
   </div>
-  <div class="section">
-    <h5>Show Orders</h5>
-    <p>    <div>
-        <a class="waves-effect light-green btn" href="{{url_for('managers.orders_manage')}}">Enter</a>
-      </div>
-    </p>
+  <div class="col s3">
+    <h5 class="center-align">הוסף מנה</h5>
+    <div class="center-align">
+      <a class="waves-effect light-green btn" href="{{url_for('managers.create_dish')}}">הוסף</a>
+    </div>
   </div>
-</section><br>
+
+
+
+</div>
+
+
+
+<div class="row">
+  <div class="col s12 m6">
+    <div class="row">
+      {% for category in categories %}
+      <a href="{{url_for('managers.dishes_by_category',id=category.id)}}">
+        <div class="col s12 m6">
+        <div class="card grey lighten-3">
+          <div class="card-image">
+            <img src="{{category.imageUrl}}" />
+          </div>
+          <div class="center-align"><span class="card-title" style="text-decoration: none;">{{category.name}}</span></div>
+          <div>
+            <div class="center-align "><a class="waves-effect light-green btn" href="{{url_for('managers.delete_category',id=category.id)}}">מחק</a></div>
+          </div>
+        </div>
+      </div></a>
+      {% endfor %}
+    </div>
+    
+  </div>
+  <div>
+    {% for delivery in deliveries %}
+    {% if delivery.cart.items|default([])|length > 0 %}
+    <div>
+      <ul class="collection hoverable">
+        <li class="collection-item "></li><a class="waves-effect light-green btn" href="{{url_for('managers.clean_order', id = delivery.id)}}"  >למחיקה</a><a class="waves-effect light-green btn" href="{{url_for('managers.show_order', id = delivery.id)}}"  >לצפייה</a>שם:{{delivery.cart.user.first_name}} {{delivery.cart.user.last_name}} מספר הזמנה:{{delivery.id}}  </li>
+      </ul>
+    </div>
+    {%endif%}
+    {%endfor%}
+  </div>
+</div>
+
+
+
 {% endblock %}

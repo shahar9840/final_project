@@ -1,3 +1,22 @@
 {% extends 'layouts/layout_manager.html' %}{% block manager %} 
-show orders
+<div><h3>הזמנות</h3></div>
+{% for delivery in deliveries %}
+{% if delivery.cart.items|default([])|length > 0 %}
+<a href="{{url_for('managers.show_order', id = delivery.id)}}"  >
+<table class="striped hoverable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>order number</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>{{delivery.cart.user.first_name}} {{delivery.cart.user.last_name}}</td>   
+        <td>{{delivery.id}}</td>
+      </tr>
+    </tbody>
+</table></a>
+{%endif%}
+{%endfor%}
 {%endblock%}

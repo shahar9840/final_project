@@ -1,5 +1,5 @@
 {% extends 'layouts/layout.html' %}{% block content %}
-<div><h3>Login</h3></div>
+<div><h3>התחברות</h3></div>
 {% with loged = get_flashed_messages(category_filter=['loged']) %}
 {%if loged %}
     {% for message in loged %}
@@ -7,7 +7,8 @@
         {% endfor %}
     {% endif %}
 {%endwith %}
-<form action="{{url_for('users.login')}}" method="POST" class="card-panel" style="margin: 10px;">
+<form  novalidate action="{{url_for('users.login')}}" method="POST" class="card-panel" style="margin: 10px;">
+    {{form.csrf_token}}
 <div>
 <div>{{form.username.label}}</div>
 <div>{{form.username}}</div>
@@ -20,11 +21,11 @@
     <p>
         <label>
             {{form.remember_me( class="filled-in " )}}
-            <span>Remember Me</span>
+            <span>זכור אותי</span>
         </label>
     </p>
 </div>
 
-<div>{{form.submit1}}</div>
+<div class="left-align">{{form.submit3}}</div>
 </form><br>
 {% endblock %}

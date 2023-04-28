@@ -1,23 +1,36 @@
 {% extends 'layouts/layout_manager.html' %}{% block manager %} 
-<section><br><br>
+<section>
+  {% with deleted = get_flashed_messages(category_filter=['deleted']) %}
+  {% if deleted %}
+  {% for message in deleted %}
+  <div class="card-panel red ">{{message}}</div>
+  {%endfor%}
+  {%endif%}
+  {% endwith %}
+  <div class="center-align border-bottom">
+    <h5>הוסף קטגוריה</h5>
+    <p><div>
+      <a class="waves-effect light-green btn center-align " href="{{url_for('managers.create_category')}}">הוסף</a>
+    </div>
+    </p>
+  </div>
+  
+  <div class="row">
     {% for category in categories %}
-<div class="row ">
-    <div class="col s12 m7 ">
+    <a href="{{url_for('managers.dishes_by_category',id=category.id)}}">
+      <div class="col s12 m3">
       <div class="card grey lighten-3">
         <div class="card-image">
-          <img src="{{category.imageUrl}}">
-          <span class="card-title">{{category.name}}</span>
+          <img src="{{category.imageUrl}}" />
         </div>
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-          I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
+        <div class="center-align"><span class="card-title" style="text-decoration: none;">{{category.name}}</span></div>
+        <div class="card-action ">
+          <a class="waves-effect light-green btn" href="{{url_for('managers.edit_category',id=category.id)}}">עריכה</a>
+          <a class="waves-effect light-green btn" href="{{url_for('managers.delete_category',id=category.id)}}">מחיקה</a>
         </div>
       </div>
-    </div>
+    </div></a>
+    {% endfor %}
   </div>
-  {%endfor%}
 </section>
 {% endblock %}

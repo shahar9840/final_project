@@ -9,6 +9,8 @@ class User(db.Model,UserMixin):
     last_name = db.Column(db.String(50),nullable=False)
     is_staff = db.Column(db.Boolean,default=False)
     email = db.Column(db.String(200),nullable=False)
+    carts = db.relationship('Cart', backref='user',cascade="save-update")
+
 
     def __str__(self) -> str:
         return self.username

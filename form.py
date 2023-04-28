@@ -1,6 +1,8 @@
+import re
 from flask_wtf import FlaskForm
-from wtforms import StringField,IntegerField,SelectField,SelectMultipleField,TextAreaField,SubmitField,RadioField,BooleanField,PasswordField
+from wtforms import StringField,IntegerField,SubmitField,BooleanField,PasswordField,ValidationError
 from wtforms.validators import DataRequired,Length,EqualTo,Email
+
 
 
 
@@ -8,22 +10,68 @@ from wtforms.validators import DataRequired,Length,EqualTo,Email
     
 
 class Form(FlaskForm):
-    first_name = StringField('First Name',validators=[
-        DataRequired('Please enter your First Name'),
-        Length(min=2,max=100)
+    first_name = StringField('שם פרטי')#,validators=[DataRequired('הכנס שם פרטי')])
+    last_name =StringField('שם משפחה')#,validators=[DataRequired('הכנס שם משפחה')]) 
+    username=StringField('שם משתמש',validators=[DataRequired('הכנס שם משתמש'),Length(6,18,'שם משתמש חייב להיות בין 6-18 תווים')])
+    email = StringField('אמייל',validators=[DataRequired('הכנס אימייל'),Email('הכנס כתובת אימייל תקינה')])
+    password = PasswordField('סיסמא',validators=[DataRequired('הכנס סיסמא'),Length(6, 20,'הסיסמא חייבת להיות בין 6-20 תווים')])
+    confirm_password = PasswordField('אישור סיסמא',validators=[EqualTo('password','הסיסמא חייבת להיות תואמת')])
+    remember_me = BooleanField('זכור אותי')
+    submit1=SubmitField('הוסף',render_kw={'class': 'waves-effect light-blue btn'})
+    submit4=SubmitField('בצע הזמנה',render_kw={'class': 'waves-effect light-blue btn'})
+    submit2=SubmitField('הוסף',render_kw={'class': 'waves-effect light-green btn'})
+    submit3=SubmitField('התחבר',render_kw={'class': 'waves-effect light-blue btn'})
+    create_category = StringField('שם קטגוריה')
+    imageUrl = StringField('כתובת תמונה')
+    dish_name= StringField('שם מנה',validators=[
+        DataRequired('Please enter your Dish Name'),
+        Length(2,100,'name has to be up to 2 digit')
         ])
-    last_name =StringField('Last Name',validators=[
-        DataRequired('Please enter your Last Name'),
-        Length(min=2,max=100)
-        ]) 
-    username=StringField('Username',validators=[DataRequired('Please enter Username')])
-    email = StringField('Email',validators=[DataRequired('Please enter Email'),Email('Please enter vaild Email')])
-    password = PasswordField('Password')
-    confirm_password = PasswordField('Confirm Password',validators=[EqualTo('password','Password must Match')])
-    remember_me = BooleanField('Remember Me')
-    submit1=SubmitField('Send',render_kw={'class': 'waves-effect light-blue btn'})
-    submit2=SubmitField('Send',render_kw={'class': 'waves-effect light-green btn'})
-    create_category = StringField('Category Name')
-    imageUrl = StringField('Insert Image Url')
+    price = IntegerField('מחיר',validators=[DataRequired('Please Enter Price')])
+    description = StringField('תיאור')
+    is_gluten_free= BooleanField('ללא גלוטן')
+    is_vegeterian = BooleanField('טבעוני')
+    address=StringField('כתובת')
+    comment=StringField('הערות למשלוח')
+    
+    
+    def validate_password(self, field):
+        password = field.data
+        if not re.search(r'[A-Z]',password):
+            raise ValidationError('הסיסמא חייבת לכלול לפחות תו גדול אחד')
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>]',password):
+            raise ValidationError('הסיסמא חייבת לכלול לפחות תו מיוחד אחד')
 
-
+# class Form(FlaskForm):
+#     first_name = StringField('שם פרטי',validators=[
+#         DataRequired('הכנס שם פרטי')
+#         ])
+#     last_name =StringField('שם משפחה',validators=[
+#         DataRequired('הכנס שם משפחה')
+#         ]) 
+#     username=StringField('שם משתמש',validators=[DataRequired('הכנס שם משתמש'),Length(6,18,'שם משתמש חייב להיות בין 6-18 תווים')])
+#     email = StringField('אמייל',validators=[DataRequired('הכנס אימייל'),Email('הכנס כתובת אימייל תקינה')])
+#     password = PasswordField('סיסמא',validators=[DataRequired('הכנס סיסמא'),Length(6, 20,'הסיסמא חייבת להיות בין 6-20 תווים')])
+#     confirm_password = PasswordField('אישור סיסמא',validators=[EqualTo('password','הסיסמא חייבת להיות תואמת')])
+#     remember_me = BooleanField('זכור אותי')
+#     submit1=SubmitField('הוסף',render_kw={'class': 'waves-effect light-blue btn'})
+#     submit2=SubmitField('הוסף',render_kw={'class': 'waves-effect light-green btn'})
+#     submit3=SubmitField('התחבר',render_kw={'class': 'waves-effect light-blue btn'})
+#     create_category = StringField('שם קטגוריה')
+#     imageUrl = StringField('כתובת תמונה')
+#     dish_name= StringField('שם מנה',validators=[
+#         DataRequired('Please enter your Dish Name'),
+#         Length(2,100,'name has to be up to 2 digit')
+#         ])
+#     price = IntegerField('מחיר',validators=[DataRequired('Please Enter Price')])
+#     description = StringField('תיאור')
+#     is_gluten_free= BooleanField('ללא גלוטן')
+#     is_vegeterian = BooleanField('טבעוני')
+    
+    
+#     def validate_password(self, field):
+#         password = field.data
+#         if not re.search(r'[A-Z]',password):
+#             raise ValidationError('הסיסמא חייבת לכלול לפחות תו גדול אחד')
+#         if not re.search(r'[!@#$%^&*(),.?":{}|<>]',password):
+#             raise ValidationError('הסיסמא חייבת לכלול לפחות תו מיוחד אחד')

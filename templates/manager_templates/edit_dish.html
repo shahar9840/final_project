@@ -1,0 +1,52 @@
+{% extends 'layouts/layout_manager.html' %}{% block manager %}
+<form action="{{url_for('managers.edit_dish',id=dish.id)}}" method="POST" class="card-panel">
+    
+    <div >
+        <label>Category</label>
+        <select class="browser-default" name="select_categories" >
+            <option selected value="{{dish.categories.id}}">{{dish.categories.name}}</option>
+            {%for category in categories %}
+            {%if category.id != dish.categories.id %}
+            <option value="{{category.id}}">{{category.name}}</option>
+            {%endif%}
+            {%endfor%}
+        </select>
+    </div>
+  </select>
+    <div>
+        <div>{{form.dish_name.label}}</div>
+        <div>{{form.dish_name(value=dish.name)}}</div>
+    </div>
+    <div>
+        <div>{{form.price.label}}</div>
+        <div>{{form.price(value=dish.price)}}</div>
+    </div>
+    <div>
+        <div>{{form.description.label}}</div>
+        <div>{{form.description(value=dish.description)}}</div>
+    </div>
+    <div>
+        <div>{{form.imageUrl.label}}</div>
+        <div>{{form.imageUrl(value=dish.imageUrl)}}</div>
+    </div>
+
+    <div>
+        <p>
+            <label>
+                {{form.is_gluten_free( class="filled-in",checked=dish.is_gluten_free)}}
+                <span>Gluten Free</span>
+            </label>
+        </p>
+    </div>
+
+    <div>
+        <p>
+            <label>
+                {{form.is_vegeterian( class="filled-in ",checked=dish.is_vegeterian)}}
+                <span>Vegeterian</span>
+            </label>
+        </p>
+    </div>
+    <div>{{form.submit2}}</div>
+</form>
+{%endblock%}

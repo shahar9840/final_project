@@ -1,0 +1,36 @@
+{% extends 'layouts/layout.html' %}{% block content %}
+<div class="row">
+  <div class="col s6"></div>
+  <div class="col s6">
+    <div class="card-panel lighten-3">
+      <div class="card-image">
+        <img
+          style="max-width: 300px; max-height: 300px"
+          class="container"
+          src="{{dish.imageUrl}}"
+        />
+      </div>
+      <h5 class="card-title"> {{dish.name}}</h5>
+      <div>
+        <div>קטגוריה: {{dish.categories.name}}</div>
+        <div>מחיר: {{dish.price}}₪</div>
+        <p>
+          :תיאור<br />
+          {{dish.description}}
+        </p>
+        {%if dish.is_gluten_free%}
+        <div>ללא גלוטן</div>
+        {%endif%} {% if dish.is_vegeterian%}
+        <div>טבעוני</div>
+        {%endif%}
+        <a class="waves-effect light-blue btn" href="{{url_for('main.main')}}"
+          >חזרה לעמוד הראשי</a
+        >
+        <a class="waves-effect light-blue btn" href="{{url_for('cart.add_to_cart',id=dish.categories.id)}}"
+          >הוספה לעגלה</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

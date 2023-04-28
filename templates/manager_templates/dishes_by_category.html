@@ -1,0 +1,40 @@
+{% extends 'layouts/layout_manager.html' %}{% block manager %} 
+<section>
+    <div class="center-align border-bottom">
+        <h5 >הוסף מנה</h5>
+        <p><div class="center-align" >
+          <a class=" waves-effect light-green btn " href="{{url_for('managers.create_dish')}}">הוסף</a>
+        </div>
+        </p>
+      </div>
+    <div class="right-align border-bottom"><h2>{{category.name}}</h2></div><br>
+    <div class="row" >
+        {% for dish in dishes %}
+        <div class="col s3 right-align">
+          <div class="card grey lighten-3">
+            <div class="card-image ">
+              <img class="" src="{{dish.imageUrl}}">
+          </div class="row ">
+          <span class="card-title">{{dish.name}}</span>
+          <div >
+              <div >קטגוריה: {{dish.categories.name}}</div>
+              <div >מחיר: {{dish.price}}₪</div>
+              <p >:תיאור<br>  {{dish.description}}  
+                {%if dish.is_gluten_free%}
+              <div>ללא גלוטן</div>
+              {%endif%}
+              {% if dish.is_vegeterian%}
+              <div>טבעוני</div>
+              {%endif%}</p>
+              
+            </div>
+            <div class="card-action ">
+              <a  href="{{url_for('managers.edit_dish',id=dish.id)}}">עריכה</a>
+              <a  href="{{url_for('managers.delete_dish',id=dish.id)}}">מחיקה</a>
+            </div>
+          </div>
+        </div>
+        {%endfor%}
+  
+</section>
+{%endblock%}

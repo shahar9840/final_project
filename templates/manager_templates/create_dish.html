@@ -1,0 +1,57 @@
+{% extends 'layouts/layout_manager.html' %}{% block manager %} 
+<h3 class="right-align ">הוסף מנה</h3>
+<form action="{{url_for('managers.create_dish')}}" method="POST" class="card-panel">
+    {% with choose =
+        get_flashed_messages(category_filter=['choose']) %} {% if choose %} {% for
+        message in choose %}
+        <div class="card-panel red">{{message}}</div>
+        {% endfor %} {% endif %} {% endwith %}
+    <div class="right-align">
+        <label>קטגוריה</label>
+        <select class="browser-default" name="select_categories" >
+            <option class="right-align" selected disabled>בחר</option>
+            {%for category in categories %}
+            <option value="{{category.id}}">{{category.name}}</option>
+            {%endfor%}
+        </select>
+    </div>
+  </select>
+    <div>
+        <div>{{form.dish_name.label}}</div>
+        <div>{{form.dish_name}}</div>
+    </div>
+    <div>
+        <div>{{form.price.label}}</div>
+        <div>{{form.price}}</div>
+    </div>
+    <div>
+        <div>{{form.description.label}}</div>
+        <div>{{form.description}}</div>
+    </div>
+    <div>
+        <div>{{form.imageUrl.label}}</div>
+        <div>{{form.imageUrl}}</div>
+    </div>
+
+    <div >
+        <p >
+            <label >
+                {{form.is_gluten_free( class="filled-in " )}}
+                <span>ללא גלוטן</span>
+            </label>
+        </p>
+    </div>
+
+    <div>
+        <p>
+            <label>
+                {{form.is_vegeterian( class="filled-in " )}}
+                <span>טבעוני</span>
+            </label>
+        </p>
+    </div>
+    <div>{{form.submit2}}</div>
+</form>
+
+
+{%endblock%}
