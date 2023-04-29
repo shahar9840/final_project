@@ -9,11 +9,7 @@ create_new %} {% for message in create_new %}
 <div class="card-panel light-green">{{message}}</div>
 {% endfor %} {% endif %} {%endwith %}
 
-{% with
-  deliverd=get_flashed_messages(category_filter=['deliverd']) %} {%if
-    deliverd %} {% for message in deliverd %}
-  <div class="card-panel light-green">{{message}}</div>
-  {% endfor %} {% endif %} {%endwith %}
+
 
 <div class="row">
   <div class="col s6">
@@ -28,13 +24,13 @@ create_new %} {% for message in create_new %}
   <div class="col s3">
     <h5 class="center-align">הוסף קטגוריה</h5>
     <div class="center-align">
-      <a class="waves-effect light-green btn" href="{{url_for('managers.create_category')}}">הוסף</a>
+      <a class="hoverable waves-effect light-green btn" href="{{url_for('managers.create_category')}}">הוסף</a>
     </div>
   </div>
   <div class="col s3">
     <h5 class="center-align">הוסף מנה</h5>
     <div class="center-align">
-      <a class="waves-effect light-green btn" href="{{url_for('managers.create_dish')}}">הוסף</a>
+      <a class="hoverable waves-effect light-green btn" href="{{url_for('managers.create_dish')}}">הוסף</a>
     </div>
   </div>
 
@@ -69,11 +65,18 @@ create_new %} {% for message in create_new %}
     {% for delivery in deliveries %}
     {% if delivery.cart.items|default([])|length > 0 %}
     <div>
-      <ul class="collection hoverable">
-        <li class="collection-item "><a class="waves-effect light-green btn" href="{{url_for('managers.delivery_deliverd', id = delivery.id)}}"  >משלוח נשלח</a> <a class="waves-effect light-green btn" href="{{url_for('managers.clean_order', id = delivery.id)}}"  >למחיקה</a><a class="waves-effect light-green btn" href="{{url_for('managers.show_order', id = delivery.id)}}"  >לצפייה</a>שם:{{delivery.cart.user.first_name}} {{delivery.cart.user.last_name}} מספר הזמנה:{{delivery.id}}  </li>
+      <ul class="collection ">
+        <li class="collection-item ">
+          <div>שם:{{delivery.cart.user.first_name}} {{delivery.cart.user.last_name}} מספר הזמנה:{{delivery.id}}</div>
+          {% if not delivery.is_delivered%}
+          <a class="hoverable waves-effect light-green btn" href="{{url_for('managers.delivery_deliverd', id = delivery.id)}}"  >משלוח נשלח</a>
+          {%endif%}
+           <a class="hoverable waves-effect light-green btn" href="{{url_for('managers.clean_order', id = delivery.id)}}"  >למחיקה</a>
+           <a class="hoverable waves-effect light-green btn" href="{{url_for('managers.show_order', id = delivery.id)}}"  >לצפייה</a>  </li>
       </ul>
     </div>
     {%endif%}
+    
     {%endfor%}
   </div>
 </div>

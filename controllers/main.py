@@ -10,7 +10,7 @@ def main():
     categories = Category.query.all()
     loged=current_user.is_authenticated 
     if not loged:
-        greeting = 'Guest'
+        greeting = 'אורח'
     else:
         greeting = f'{current_user.first_name.capitalize()} { current_user.last_name.capitalize()}'
         

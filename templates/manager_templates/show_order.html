@@ -1,6 +1,11 @@
 {% extends 'layouts/layout_manager.html' %}{% block manager %}
 
-<div>
+{% with
+    deliverd=get_flashed_messages(category_filter=['deliverd']) %} {%if
+      deliverd %} {% for message in deliverd %}
+    <div class="card-panel light-green">{{message}}</div>
+    {% endfor %} {% endif %} {%endwith %}
+<div class="card-panel">
     <div><h3>{{delivery.id}} :הזמנה מספר</h3></div>
     <div><h4>{{delivery.cart.user.first_name}} {{delivery.cart.user.last_name}}  :שם</h4></div>
     <div><h5>{{delivery.created}} :תאריך</h5></div>
@@ -10,7 +15,7 @@
     <div><h5>סטטוס:בהכנה</h5></div>
     {%endif%}
 
-        <div>
+        <div >
             <table class="responsive-table">
                 <thead>
                     <tr>
@@ -29,6 +34,7 @@
             </table>ֿ
             {% if not delivery.is_delivered%}
             <h5>סכום לתשלום:{{cart_price}}₪</h5>
+            <div><a class="hoverable waves-effect light-green btn" href="{{url_for('managers.delivery_deliverd', id = delivery.id)}}"  >משלוח נשלח</a></div>
             {%else%}
             <h5>שולם:{{cart_price}}₪</h5>
             {%endif%}

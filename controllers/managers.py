@@ -181,7 +181,7 @@ def delivery_deliverd(id):
     delivery.is_delivered = True
     db.session.commit()
     flash('נשלח','deliverd')
-    return redirect(url_for('managers.manager_main'))
+    return redirect(url_for('managers.show_order'))
 
 
 @login_required
@@ -193,8 +193,16 @@ def show_users():
 @login_required
 def make_staff(id):
     user= User.query.get(id)
-    if request.method == 'POST':
-        user.is_staff = True
-        db.session.commit()
-        flash(f'{user.first_name} is staff now','make_staff')
-        return redirect(url_for('managers.manager_main'))
+    user.is_staff = True
+    db.session.commit()
+    flash(f'{user.first_name} is staff now','make_staff')
+    return redirect(url_for('managers.show_users'))
+
+@login_required
+def remove_staff(id):
+    user= User.query.get(id)
+    user.is_staff = False
+    db.session.commit()
+    flash(f'{user.first_name} is not staff now','remove_staff')
+    return redirect(url_for('managers.show_users'))
+
