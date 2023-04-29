@@ -1,17 +1,14 @@
-from flask import render_template, redirect,request,url_for
+from flask import render_template
 from models.users import User
 from models.category import Category
-from models.dishes import Dish,Items
+
 from controllers.cart import show_order
+from flask_login import current_user
 
-
-from flask_login import current_user,login_required
-
-
+#צפייה בעמוד ראשי
 def main():
     categories = Category.query.all()
     loged=current_user.is_authenticated 
-    
     if not loged:
         greeting = 'Guest'
     else:

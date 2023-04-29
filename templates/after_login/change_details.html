@@ -1,5 +1,5 @@
 {% extends 'layouts/layout.html' %}{% block content %}
-<form method="POST" action="{{url_for('users.signup')}}" novalidate class="card-panel">
+<form method="POST" action="{{url_for('users.change_details')}}" novalidate class="card-panel">
     {{form.csrf_token}}
     <div>
         <div>{{form.first_name.label}}</div>

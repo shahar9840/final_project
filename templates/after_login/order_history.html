@@ -1,0 +1,31 @@
+{% extends 'layouts/layout.html' %}{% block content %}
+
+<h3>היסטוריית הזמנות</h3>
+{% for cart in range(len(carts))[::-1] %} 
+{%if len(carts[cart].items) > 0 %}
+<ul class="collection with-header">
+  <li class="collection-header"><h4>מספר הזמנה: {{carts[cart].id}}</h4></li>
+  {% if not carts[cart].deliveries.created == None %}
+  <li class="collection-header">
+    <h5>תאריך:{{carts[cart].deliveries.created}}</h5>
+    {%else%}
+    <li class="collection-header"><h5>תאריך:הזמנה לא בוצעה עדיין</h5></li>
+    {%endif%}
+  {% if carts[cart].deliveries.is_delivered %}
+   <li class="collection-item"><h6>סטטוס הזמנה: נשלח</h6></li>
+   {%else%}
+   <li class="collection-item"><h6>סטטוס הזמנה: בהכנה</h6></li>
+   {%endif%}
+  </li>
+  
+   {%for item in carts[cart].items%}
+
+  <li class="collection-item">{{item.dishes.name}}|{{item.dishes.price}}₪</li>
+  {%endfor%}
+  {% if carts[cart].deliveries.is_delivered %}
+  <li><h6>שולם:{{sum(price[cart])}}₪</h6></li>
+  {%else%}
+  <li><h6>סכום לתשלום:{{sum(price[cart])}}₪</h6></li>
+  {%endif%}
+</ul>
+{%endif%} {%endfor%} {%endblock%}

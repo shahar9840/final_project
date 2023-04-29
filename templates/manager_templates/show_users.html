@@ -1,0 +1,27 @@
+{% extends 'layouts/layout_manager.html' %}{% block manager %}
+<h2>משתמשים</h2>
+<table>
+    <thead>
+      <tr>
+          <th>id</th>
+          <th>Name</th>
+          <th>Item Name</th>
+          <th>Item Price</th>
+      </tr>
+    </thead>
+{%for user in users %}
+    <tbody>
+      <tr>
+        <td>{{user.id}}</td>
+        <td>{{user.username}}</td>
+        <td>{{user.first_name}} {{user.last_name}}</td>
+      {% if user.is_staff %}
+      <td>מנהל</td>
+        {%else%}
+        <td><a class="hoverable waves-effect light-green btn" href="{{url_for('managers.make_staff')}}">הפוך למנהל</a></td>
+      {%endif%}
+      </tr>
+    </tbody>
+    {%endfor%}
+</table>
+{% endblock %}

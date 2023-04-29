@@ -3,6 +3,13 @@
 <div>
     <div><h3>{{delivery.id}} :הזמנה מספר</h3></div>
     <div><h4>{{delivery.cart.user.first_name}} {{delivery.cart.user.last_name}}  :שם</h4></div>
+    <div><h5>{{delivery.created}} :תאריך</h5></div>
+    {% if delivery.is_delivered %}
+    <div><h5>סטטוס:נשלח</h5></div>
+    {%else%}
+    <div><h5>סטטוס:בהכנה</h5></div>
+    {%endif%}
+
         <div>
             <table class="responsive-table">
                 <thead>

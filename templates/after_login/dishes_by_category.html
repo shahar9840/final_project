@@ -4,8 +4,9 @@
     <div class="right-align border-bottom"><h2>{{category.name}}</h2></div><br>
     <div class="row " >
         {% for dish in dishes %}
-          <div  class=" card grey lighten-3 center-align">
-            <div style="max-width: 30%;" class="container card-image ">
+         <div class="col s3 right-align">
+          <div class="card grey lighten-3">
+            <div class="card-image ">
               <img  class="" src="{{dish.imageUrl}}">
           </div class="row ">
           <span class="card-title">{{dish.name}}</span>
@@ -21,9 +22,21 @@
               {%endif%}</p>
               
             </div>
-            <div class="card-action "><div class="center-align"><a class="hoverable waves-effect light-blue btn" href="{{url_for('cart.add_to_cart',id=dish.id)}}">הוסף לעגלה</a></div>
-              
+            <form
+            action="{{url_for('cart.add_to_cart',id=dish.id)}}"
+            novalidate
+            method="POST"
+          >
+          {{form.csrf_token}}
+            <div class="card-action">
+              <div class="center-align">
+                {{form.amount.label}} {{form.amount(value=1)}} {{form.submit1}}
+                {% for message in form.amount.errors %}
+                <div style="color: red">{{message}}</div>
+                {% endfor %}
+              </div>
             </div>
+          </form>
           </div>
         </div>
         {%endfor%}

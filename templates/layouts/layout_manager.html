@@ -21,18 +21,22 @@
           >אתר ניהול</a
         >
         <ul id="nav-mobile" class="left-align">
+          {% if current_user.is_authenticated %}
           <li><a href="{{url_for('users.logout')}}">התנתקות</a></li>
-          <li>
-            <a href="{{url_for('managers.manager_login')}}">התחברות מנהל</a>
-          </li>
-          <li><a href="{{url_for('users.signup')}}">הירשם</a></li>
-          <li><a href="{{url_for('users.login')}}">התחבר</a></li>
+          <li><a href="{{url_for('users.change_details')}}">שינוי פרטים</a></li>
+          <li><a href="{{url_for('managers.show_users')}}">ניהול משתמשים</a></li>
           <li><a href="{{url_for('managers.manager_main')}}">אתר ניהול</a></li>
           <li><a href="{{url_for('main.main')}}">אתר לקוחות</a></li>
+        {%else%}
+          <li><a href="{{url_for('managers.manager_login')}}">התחברות מנהל</a></li>
+          <li><a href="{{url_for('users.signup')}}">הירשם</a></li>
+          <li><a href="{{url_for('users.login')}}">התחבר</a></li>
+          {%endif%}
         </ul>
       </div>
     </nav>
     <div>
+      {% if current_user.is_authenticated %}
       <nav class="light-green lighten-1">
         <div class="container row nav-wrapper">
           <h5 class="col">
@@ -49,6 +53,7 @@
           </h5>
         </div>
       </nav>
+      {%endif%}
     </div>
     <section class="container">{% block manager %} {% endblock %}</section>
 

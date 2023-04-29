@@ -1,6 +1,7 @@
 from db import db
 from flask_login import LoginManager,UserMixin,login_user,current_user,login_required,logout_user
 
+#מודל משתמש אשר מקושר לעגלה במערכת אחד לרבים
 class User(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(20),nullable=False,unique=True)

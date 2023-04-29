@@ -1,50 +1,33 @@
 from flask import render_template, redirect,request,url_for,flash
-from flask_login import LoginManager,UserMixin,login_user,current_user,login_required,logout_user
+from flask_login import login_user,current_user,login_required
 from models.users import User
 from models.category import Category
 from models.deliveries import Delivery
 from models.dishes import Dish
+from models.carts import Cart
 from form_login import LoginForm
 from form_createdish import CreateDishForm
 from form_createcategory import CreateCategoryForm
 from db import db
 from auth import login_manager
 from controllers.cart import show_order
-from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequestKeyError
 
 
-
-def price_per_cart():
-    users = User.query.all()
-    carts=[user.carts for user in users]
-    for user_carts in carts:
-        for cart in user_carts:
-            print(cart)
-            for item in cart.items:
-                prices=sum([item.dishes.price for item in cart.items])
-            cart_prices={cart.items:prices}
-            print(cart_prices)
-
-
+#התחברות מנהל
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
+#התחברות מנהל
 @login_manager.unauthorized_handler
 def unauthorized():
     return redirect(url_for('users.login'))
-
-
-
-
+#התחברות מנהל
 def manager_login():
-    form = LoginForm()
-    
+    form = LoginForm()   
     if current_user.is_authenticated:
         return redirect(url_for('managers.manager_main'))
     if request.method == "POST":
-        print(form.remember_me.data)
         remember=False
         if form.remember_me.data == True:
             remember=True
@@ -53,13 +36,9 @@ def manager_login():
             if form.password.data == user.password and user.is_staff == True :
                 login_user(user,remember=remember)
                 flash('logged in successfully!','loged')
-                return redirect(url_for('managers.manager_main'))
-    
-    
+                return redirect(url_for('managers.manager_main'))    
     return render_template('manager_templates/manager_login.html',form = form)
-    
-
-
+#צפייה בעמוד ראשי של הניהול
 @login_required
 def manager_main():
     deliveries=Delivery.query.all()  
@@ -68,8 +47,7 @@ def manager_main():
         return render_template('manager_templates/manager_main.html',categories=categories,deliveries=deliveries)
     else:
         return redirect(url_for('main.main'))
-
-
+#הוספת קטגוריה
 @login_required
 def create_category():
     form = CreateCategoryForm()
@@ -84,6 +62,13 @@ def create_category():
             flash(f'{form.create_category.data.capitalize()} created as new category!','create_new')
             return redirect(url_for('managers.show_categories'))
         return render_template('manager_templates/create_category.html',form=form)
+#צפייה בכל הקטגוריות
+@login_required
+def show_categories():
+    categories = Category.query.all()
+    if current_user.is_staff:
+        return render_template('manager_templates/show_categories.html',categories = categories)
+#עריכת קטגוריה
 @login_required
 def edit_category(id):
     form=CreateCategoryForm()
@@ -94,7 +79,7 @@ def edit_category(id):
             category.imageUrl = form.imageUrl.data
             db.session.commit()
         return render_template('manager_templates/edit_category.html',category=category,form=form)
-
+#מחיקת קטגוריה
 @login_required
 def delete_category(id):
     if current_user.is_staff:
@@ -103,9 +88,7 @@ def delete_category(id):
         db.session.commit()
         flash(f'{category.name} has been deleted','deleted')
         return redirect(url_for('managers.show_categories'))
-               
-        
-   
+#יצירת מנה 
 @login_required
 def create_dish():
         form = CreateDishForm()
@@ -129,27 +112,14 @@ def create_dish():
                     flash('אנא בחר קטגוריה למנה','choose')
                     return redirect(url_for('managers.create_dish'))
             return render_template('manager_templates/create_dish.html',form=form,categories=categories)
-        
-
-
-@login_required
-def orders_manage():
-    deliveries=Delivery.query.all()              
-    if current_user.is_staff:
-        return render_template('manager_templates/manager_show_orders.html',deliveries=deliveries)
-
-@login_required
-def show_categories():
-    categories = Category.query.all()
-    if current_user.is_staff:
-        return render_template('manager_templates/show_categories.html',categories = categories)
-
+    
+#צפייה בכל המנות
 @login_required
 def show_dishes():
     dishes = Dish.query.all()
     if current_user.is_staff:
         return render_template('manager_templates/show_dishes.html',dishes=dishes)
-    
+#עריכת מנה   
 @login_required
 def edit_dish(id):
     form = CreateDishForm()
@@ -167,8 +137,7 @@ def edit_dish(id):
             db.session.commit()
             return redirect(url_for('managers.dishes_by_category',id=dish.category_id))             
         return render_template('manager_templates/edit_dish.html',dish=dish,form=form,categories=categories)
-
-
+#מחיקת מנה
 @login_required
 def delete_dish(id):
     dish= Dish.query.get(id)
@@ -178,28 +147,54 @@ def delete_dish(id):
         flash(f'{dish.name} has been deleted','deleted_dish')
         return redirect(url_for('managers.show_categories'))    
     
-
+#ניהול כל ההזמנות
+@login_required
+def orders_manage():
+    deliveries=Delivery.query.all()              
+    if current_user.is_staff:
+        return render_template('manager_templates/manager_show_orders.html',deliveries=deliveries)
+#צפייה במנות לפי קטגוריה
 @login_required
 def dishes_by_category(id):
     category= Category.query.get(id)
     dishes = Dish.query.filter_by(category_id=id).all()
     if current_user.is_staff:
         return render_template('manager_templates/dishes_by_category.html',dishes=dishes,category=category)
-
-
-
+#צפייה בהזמנה ספציפית
 @login_required
 def show_order(id):
     delivery= Delivery.query.get(id)
-
-    print(delivery.cart.items)
     cart_price=sum([item.dishes.price for item in delivery.cart.items])
     if current_user.is_staff:
         return render_template('manager_templates/show_order.html',delivery=delivery,cart_price=cart_price)
+#מחיקת הזמנה
 @login_required
 def clean_order(id):
     delivery= Delivery.query.get(id)
     delivery.cart.items=[]
     db.session.commit()
     return redirect(url_for('managers.manager_main'))
-        
+
+@login_required
+def delivery_deliverd(id):
+    delivery=delivery = Delivery.query.get(id)
+    delivery.is_delivered = True
+    db.session.commit()
+    flash('נשלח','deliverd')
+    return redirect(url_for('managers.manager_main'))
+
+
+@login_required
+def show_users():
+    users=User.query.all()
+    if current_user.is_staff:
+        return render_template('manager_templates/show_users.html',users=users)
+
+@login_required
+def make_staff(id):
+    user= User.query.get(id)
+    if request.method == 'POST':
+        user.is_staff = True
+        db.session.commit()
+        flash(f'{user.first_name} is staff now','make_staff')
+        return redirect(url_for('managers.manager_main'))

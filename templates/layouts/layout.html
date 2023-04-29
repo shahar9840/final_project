@@ -14,34 +14,38 @@
     <nav class="light-blue right-align">
       <div class="container">
         <a href="{{url_for('main.main')}}" class="left brand-logo"
-          >מסעדה אונליין</a
-        >
+          >מסעדה אונליין</a>
         <ul id="nav-mobile" class="left-align">
-          <li><a href="{{url_for('users.logout')}}">התנתקות</a></li>
-          <li><a href="{{url_for('users.change_details')}}">שינוי פרטים</a></li>
-          <li><a href="{{url_for('users.signup')}}">הירשם</a></li>
-          <li>
-            <a href="{{url_for('managers.manager_login')}}">התחברות מנהל</a>
-          </li>
-          <li><a href="{{url_for('users.login')}}">התחבר</a></li>
-          <li><a href="{{url_for('managers.manager_main')}}">אתר ניהול</a></li>
-          <li><a href="{{url_for('main.main')}}">אתר לקוחות</a></li>
+          {% if current_user.is_authenticated %}
+            <li><a href="{{url_for('users.logout')}}">התנתקות</a></li>
+            <li><a href="{{url_for('users.change_details')}}">שינוי פרטים</a></li>
+            {% if current_user.is_staff %}
+            <li><a href="{{url_for('main.main')}}">אתר לקוחות</a></li>
+            <li><a href="{{url_for('managers.manager_main')}}">אתר ניהול</a></li>
+
+        
+            
+            {% endif %}
+            {% else %}
+            <li><a href="{{url_for('users.signup')}}">הירשם</a></li>
+            <li><a href="{{url_for('managers.manager_login')}}">התחברות מנהל</a></li>
+            <li><a href="{{url_for('users.login')}}">התחבר</a></li>
+          {% endif %}
+          
         </ul>
       </div>
     </nav>
-
+    {% if current_user.is_authenticated %}
     <nav class="light-blue lighten-1 right-align">
       <div class="container row nav-wrapper right-align">
         <h5 class="col"><a href="{{url_for('cart.show_cart')}}">עגלה</a></h5>
-        <h5 class="col">
-          <a href="{{url_for('dishes.show_dishes')}}">מנות</a>
-        </h5>
-        <h5 class="col">
-          <a href="{{url_for('categories.show_categories')}}">קטגוריות</a>
-        </h5>
+        <h5 class="col"><a href="{{url_for('deliveries.order_history')}}">ההזמנות שלי</a></h5>
+        <h5 class="col"><a href="{{url_for('dishes.show_dishes')}}">מנות</a></h5>
+        <h5 class="col"><a href="{{url_for('categories.show_categories')}}">קטגוריות</a></h5>
         <h5 class="col"><a href="{{url_for('main.main')}}">ראשי</a></h5>
       </div>
     </nav>
+    {% endif %}
     <div class="container">{% block content %} {% endblock %}</div>
     <footer class="page-footer light-blue">
       <div class="container">

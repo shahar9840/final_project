@@ -21,19 +21,21 @@
         <div>טבעוני</div>
         {%endif%}
       </div>
+      <form
+      action="{{url_for('cart.add_to_cart',id=dish.id)}}"
+      novalidate
+      method="POST"
+    >
+    {{form.csrf_token}}
       <div class="card-action">
-        <div class="center-align"><a class="hoverable waves-effect light-blue btn" href="{{url_for('cart.add_to_cart',id=dish.id)}}">הוסף לעגלה</a></div>
-          <div><select name="amount" id="">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-              </select>
-          </div>
+        <div class="center-align">
+          {{form.amount.label}} {{form.amount(value=1)}} {{form.submit1}}
+          {% for message in form.amount.errors %}
+          <div style="color: red">{{message}}</div>
+          {% endfor %}
+        </div>
       </div>
+    </form>
     </div>
   </div>
   {%endfor%}

@@ -2,6 +2,12 @@
 <div class="card-panel right-align">
     <div class="right-align"><h2>!הזמנה בוצעה בהצלחה</h2></div>
     <div><h4>{{delivery.id}} :הזמנה מספר</h4></div>
+    <div><h5>{{delivery.cart.deliveries.created}} :תאריך הזמנה</h5></div>
+    {%if delivery.is_deliverd %}
+    <div>סטטוס הזמנה: נשלח </div>
+    {%else%}
+    <div>סטטוס הזמנה: בהכנה </div>
+    {%endif%}
     <div>
         <table class="responsive-table">
             <thead>

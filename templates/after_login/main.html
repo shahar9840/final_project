@@ -10,7 +10,13 @@ message in success %}
   <div class="card-panel light-green">{{message}}</div>
   {% endfor %} {% endif %} {% endwith %}
 
-
+  {% with added = get_flashed_messages(category_filter=['added']) %}
+  {% if added %}
+  {% for message in added %}
+  <div class="card-panel light-green ">{{message}}</div>
+  {%endfor%}
+  {%endif%}
+  {% endwith %}
 
   {% with details_not_changed =
     get_flashed_messages(category_filter=['details_not_changed']) %} {% if details_not_changed %} {% for

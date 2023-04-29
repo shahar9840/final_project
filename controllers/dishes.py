@@ -4,13 +4,16 @@ from db import db
 from sqlalchemy.exc import IntegrityError
 from models.category import Category
 from models.dishes import Dish
+from from_addtocart import AddToCartForm
+from controllers.cart import add_to_cart
 
-
-
+#צפייה בכל המנות במסעדה
 @login_required
 def show_dishes():
+    form=AddToCartForm()
     dishes = Dish.query.all()
-    return render_template('after_login/show_dishes.html',dishes=dishes)
+    return render_template('after_login/show_dishes.html',dishes=dishes,form=form)
+#צפייה במנה ספציפית
 @login_required
 def show_dish(id):
     dish=Dish.query.get(id)
