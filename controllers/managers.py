@@ -152,7 +152,7 @@ def delete_dish(id):
 def orders_manage():
     deliveries=Delivery.query.all()              
     if current_user.is_staff:
-        return render_template('manager_templates/manager_show_orders.html',deliveries=deliveries)
+        return render_template('manager_templates/show_orders.html',deliveries=deliveries)
 #צפייה במנות לפי קטגוריה
 @login_required
 def dishes_by_category(id):
@@ -181,7 +181,7 @@ def delivery_deliverd(id):
     delivery.is_delivered = True
     db.session.commit()
     flash('נשלח','deliverd')
-    return redirect(url_for('managers.show_order'))
+    return redirect(url_for('managers.show_order',id=delivery.id))
 
 
 @login_required

@@ -32,11 +32,15 @@
         <td>{{user.first_name}} {{user.last_name}}</td>
       {% if user.is_staff %}
       <td>מנהל </td>
+      {%if not user.id == 1%}
       <td><a class="hoverable waves-effect light-green btn" href="{{url_for('managers.remove_staff',id=user.id)}}">הסר מנהל</a></td>
+      {%endif%}
       {%else%}
       <td>לקוח</td>
         <td><a class="hoverable waves-effect light-green btn" href="{{url_for('managers.make_staff',id=user.id)}}">הפוך למנהל</a></td>
       {%endif%}
+      
+
       </tr>
     </tbody>
     {%endfor%}
