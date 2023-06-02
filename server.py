@@ -4,7 +4,7 @@ from models.carts import Cart
 from models.category import Category
 from models.deliveries import Delivery
 from models.dishes import Dish,Items
-
+from config import DBUSER,DBHOST,DBPASS
 from models.users  import User
 from routes.main import main_bp
 from routes.users import users_bp
@@ -15,8 +15,10 @@ from routes.dishes import dishes_bp
 from routes.cart import cart_bp
 from auth import login_manager
 
+
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://{DBUSER}:{DBPASS}@{DBHOST}/postgres'
 app.config['SECRET_KEY'] = 'kjhgi1723yt172g'
 app.jinja_env.globals.update(sum=sum)
 app.jinja_env.globals.update(len=len)
@@ -37,4 +39,4 @@ app.register_blueprint(cart_bp)
 app.register_blueprint(deliveries_bp)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,host=('0.0.0.0'),port=1234)
